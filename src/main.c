@@ -1,6 +1,6 @@
 #include "../philo.h"
 
-void check_settings(t_philo philo)
+void	check_settings(t_philo philo)
 {
 	if (philo.n_philo < 2)
 		write(1, "Error: number of philosophers must be at least 2\n", 50);
@@ -16,13 +16,38 @@ void check_settings(t_philo philo)
 		exit(1);
 }
 
+void	set_philo(t_philo *philo)
+{
+	int i;
+
+	i = 0;
+	philo->status = malloc(sizeof(t_status) * philo->n_philo);
+	if (!philo->status)
+	{
+		write(1, "Error: malloc failed in set_philo\n", 21);
+		exit(1);
+	}
+	while (i < philo->n_philo)
+	{
+		philo->status[i].id = i;
+		philo->status[i].is_dead = 0;
+		philo->status[i].is_eating = 0;
+		philo->status[i].is_sleeping = 0;
+		philo->status[i].is_thinking = 0;
+		philo->status[i].n_eat = 0;
+		i++;
+	}
+}
 
 int main (int ac, char* av[])
 {
 	t_philo philo;
 
 	if (ac < 5 || ac > 6)
-		exit(write(1, "Error: wrong number of arguments\n", 34), 1);
+	{
+		write(1, "Error: wrong number of arguments\n", 34);
+		exit(1);
+	}
 	philo.n_philo = atoi(av[1]);
 	philo.t_die = atoi(av[2]);
 	philo.t_eat = atoi(av[3]);
@@ -32,5 +57,6 @@ int main (int ac, char* av[])
 	else
 		philo.n_eat = -1;
 	check_settings(philo);
+	set_philo(&philo);
 	return (0);
 }

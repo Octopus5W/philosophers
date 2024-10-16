@@ -7,6 +7,7 @@
 
 typedef struct status
 {
+	int id;
 	int is_dead;
 	int is_eating;
 	int is_sleeping;
@@ -16,7 +17,7 @@ typedef struct status
 
 typedef struct s_philo
 {
-	int id;
+	int n_philo;
 	int n_eat;
 	int t_die;
 	int t_eat;
