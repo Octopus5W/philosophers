@@ -33,7 +33,7 @@ void	set_philo(t_philo *philo)
 		philo->status[i].is_dead = 0;
 		philo->status[i].is_eating = 0;
 		philo->status[i].is_sleeping = 0;
-		philo->status[i].is_thinking = 0;
+		philo->status[i].is_thinking = 1;
 		philo->status[i].n_eat = 0;
 		i++;
 	}
