@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   actions.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/11 16:20:45 by hdelbecq          #+#    #+#             */
+/*   Updated: 2025/01/11 16:20:46 by hdelbecq         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../philo.h"
 
 void	take_fork(t_philo *philo)
@@ -31,12 +43,12 @@ void	philo_sleep(t_data *data, t_philo *philo)
 	}
 }
 
-void philo_think(t_data *data, t_philo *philo)
+void	philo_think(t_data *data, t_philo *philo)
 {
 	if (!data->is_dead)
 	{
 		printf("philo %d is thinking\n", philo->id);
-		if(pthread_join(philo->next->thread, NULL))
+		if (pthread_join(philo->next->thread, NULL))
 		{
 			if (data->is_dead)
 				exit(1);
@@ -44,9 +56,9 @@ void philo_think(t_data *data, t_philo *philo)
 	}
 }
 
-void philo_die(t_data *data, t_philo *philo)
+void	philo_die(t_data *data, t_philo *philo)
 {
-	t_philo *ptr;
+	t_philo	*ptr;
 
 	if (!data->is_dead)
 	{
