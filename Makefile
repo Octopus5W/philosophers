@@ -1,13 +1,13 @@
 NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SRC =	src/main.c
+SRC =	src/main.c src/parsing.c src/actions.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -g
 
 clean:
 	rm -f $(OBJ)
@@ -15,4 +15,4 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 
-re: all fclean
+re: fclean all
