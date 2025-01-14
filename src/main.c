@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/11 20:58:50 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/14 18:47:35 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*routine(void *arg)
 
 	printf("routine\n");
 	philo = (t_philo *)arg;
-	take_fork(philo);
+	take_fork(philo->data, philo);
 	philo_eat(philo->data, philo);
 	philo_sleep(philo->data, philo);
 	philo_think(philo->data, philo);
@@ -65,7 +65,7 @@ void	set_thread(t_data *data)
 	{
 		if (tmp == NULL)
 			tmp = data->philo;
-		pthread_mutex_init(&data->philo->mutex, NULL);
+		pthread_mutex_init(&data->philo->mutex_fork, NULL);
 		if (pthread_create(&tmp->thread, NULL, &routine, tmp))
 		{
 			write(2, "Error: pthread_create failed in set_thread\n", 43);
@@ -81,6 +81,8 @@ int	main(int ac, char *av[])
 	t_data	data;
 
 	check_settings(&data, ac, av);
+	pthread_mutex_init(&data.mutex_dead, NULL);
+	pthread_mutex_init(&data.mutex_print, NULL);
 	set_philo(&data);
 	set_thread(&data);
 	printf("thread set\n");
