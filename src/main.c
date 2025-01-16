@@ -6,11 +6,22 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/14 18:47:35 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:54:54 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+
+long	get_ms(t_data *data)
+{
+	struct timeval	current_time;
+	long			time;
+
+	gettimeofday(&current_time, NULL);
+	time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
+	time -= (data->current_time.tv_sec * 1000) + (data->current_time.tv_usec / 1000);
+	return (time);
+}
 
 void	*routine(void *arg)
 {
@@ -18,12 +29,15 @@ void	*routine(void *arg)
 
 	printf("routine\n");
 	philo = (t_philo *)arg;
-	take_fork(philo->data, philo);
-	philo_eat(philo->data, philo);
-	philo_sleep(philo->data, philo);
-	philo_think(philo->data, philo);
-	if (philo->data->is_dead)
-		exit(1);
+	while (1)
+	{
+		take_fork(philo->data, philo);
+		philo_eat(philo->data, philo);
+		philo_sleep(philo->data, philo);
+		philo_think(philo->data, philo);
+		if (philo->data->is_dead || philo->data->n_eat == 0)
+			exit(1);
+	}
 	return (NULL);
 }
 
@@ -66,6 +80,7 @@ void	set_thread(t_data *data)
 		if (tmp == NULL)
 			tmp = data->philo;
 		pthread_mutex_init(&data->philo->mutex_fork, NULL);
+		tmp->last_meal = 0;
 		if (pthread_create(&tmp->thread, NULL, &routine, tmp))
 		{
 			write(2, "Error: pthread_create failed in set_thread\n", 43);
@@ -84,6 +99,7 @@ int	main(int ac, char *av[])
 	pthread_mutex_init(&data.mutex_dead, NULL);
 	pthread_mutex_init(&data.mutex_print, NULL);
 	set_philo(&data);
+	gettimeofday(&data.current_time, NULL);
 	set_thread(&data);
 	printf("thread set\n");
 	return (0);

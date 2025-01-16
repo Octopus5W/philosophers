@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:45 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/14 18:44:55 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:59:58 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	take_fork(t_data *data, t_philo *philo)
 		philo->fork = 2;
 		philo->next->fork = 0;
 		pthread_mutex_lock(&philo->data->mutex_print);
-		printf("philo %d has taken a fork\n", philo->id);
+		printf("%ld philo %d has taken a fork\n", get_ms(data), philo->id);
 		pthread_mutex_unlock(&philo->data->mutex_print);
 	}
 	else
@@ -38,7 +38,8 @@ void	philo_eat(t_data *data, t_philo *philo)
 	{
 		pthread_mutex_unlock(&data->mutex_dead);
 		pthread_mutex_lock(&philo->data->mutex_print);
-		printf("philo %d is eating\n", philo->id);
+		philo->last_meal = get_ms(data);
+		printf("%ld philo %d is eating\n", philo->last_meal, philo->id);
 		philo->fork = 1;
 		philo->next->fork = 1;
 		usleep(data->t_eat * 1000);
@@ -57,7 +58,8 @@ void	philo_sleep(t_data *data, t_philo *philo)
 	{
 		pthread_mutex_unlock(&data->mutex_dead);
 		pthread_mutex_lock(&data->mutex_print);
-		printf("philo %d is sleeping\n", philo->id);
+		philo->last_sleep = get_ms(data);
+		printf("%ld philo %d is sleeping\n", philo->last_sleep, philo->id);
 		usleep(data->t_sleep * 1000);
 		pthread_mutex_unlock(&data->mutex_print);
 	}
@@ -72,7 +74,7 @@ void	philo_think(t_data *data, t_philo *philo)
 	{
 		pthread_mutex_unlock(&data->mutex_dead);
 		pthread_mutex_lock(&data->mutex_print);
-		printf("philo %d is thinking\n", philo->id);
+		printf("%ld philo %d is thinking\n", get_ms(data), philo->id);
 		pthread_mutex_unlock(&data->mutex_print);
 	}
 	else
@@ -81,16 +83,18 @@ void	philo_think(t_data *data, t_philo *philo)
 
 void	philo_die(t_data *data, t_philo *philo)
 {
-	if (!data->is_dead)
+	if (!data->is_dead && (get_ms(data) - philo->last_meal - philo->last_sleep) > data->t_die)
 	{
 		data->is_dead = 1;
 		pthread_mutex_unlock(&data->mutex_dead);
 		pthread_mutex_lock(&philo->data->mutex_print);
-		printf("philo %d is dead\n", philo->id);
+		printf("%ld philo %d is dead\n", get_ms(data), philo->id);
 		pthread_mutex_unlock(&philo->data->mutex_print);
 		exit(1);
 	}
-	else
+	else if (data->is_dead)
+	{
 		pthread_mutex_unlock(&data->mutex_dead);
-	exit(1);
+		exit(1);	
+	}
 }
