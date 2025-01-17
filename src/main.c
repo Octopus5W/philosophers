@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/16 17:54:54 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/17 15:09:54 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ long	get_ms(t_data *data)
 
 	gettimeofday(&current_time, NULL);
 	time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
-	time -= (data->current_time.tv_sec * 1000) + (data->current_time.tv_usec / 1000);
+	time -= (data->current_time.tv_sec * 1000) + \
+	(data->current_time.tv_usec / 1000);
 	return (time);
 }
 

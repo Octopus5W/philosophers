@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:45 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/16 17:59:58 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/17 15:11:18 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ void	philo_think(t_data *data, t_philo *philo)
 
 void	philo_die(t_data *data, t_philo *philo)
 {
-	if (!data->is_dead && (get_ms(data) - philo->last_meal - philo->last_sleep) > data->t_die)
+	if (!data->is_dead && \
+	(get_ms(data) - philo->last_meal - philo->last_sleep) > data->t_die)
 	{
 		data->is_dead = 1;
 		pthread_mutex_unlock(&data->mutex_dead);
@@ -95,6 +96,6 @@ void	philo_die(t_data *data, t_philo *philo)
 	else if (data->is_dead)
 	{
 		pthread_mutex_unlock(&data->mutex_dead);
-		exit(1);	
+		exit(1);
 	}
 }
