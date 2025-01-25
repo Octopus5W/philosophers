@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/17 15:09:54 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/25 19:42:12 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	*routine(void *arg)
 {
 	t_philo	*philo;
 
-	printf("routine\n");
 	philo = (t_philo *)arg;
 	while (1)
 	{
@@ -102,6 +101,5 @@ int	main(int ac, char *av[])
 	set_philo(&data);
 	gettimeofday(&data.current_time, NULL);
 	set_thread(&data);
-	printf("thread set\n");
 	return (0);
 }

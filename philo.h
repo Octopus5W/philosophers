@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:21:00 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/16 17:59:36 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/25 19:41:36 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void				philo_eat(t_data *data, t_philo *philo);
 void				philo_sleep(t_data *data, t_philo *philo);
 void				philo_think(t_data *data, t_philo *philo);
 void				philo_die(t_data *data, t_philo *philo);
+
+void				my_sleep(int time);
 
 long				get_ms(t_data *data);
 #endif
