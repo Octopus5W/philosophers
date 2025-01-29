@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/28 07:44:04 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/29 11:58:31 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-void	set_philo(t_data *data)
+t_philo*	set_philo(t_data *data)
 {
 	int		i;
 	t_philo	*tmp;
@@ -66,8 +66,8 @@ void	set_philo(t_data *data)
 		tmp = data->philo;
 		data->philo->data = data;
 	}
-	data->philo->next = first;
 	first->prev = data->philo;
+	return(data->philo->next = first);
 }
 
 int	set_mutex(t_data *data)
@@ -137,9 +137,9 @@ int	main(int ac, char *av[])
 	t_data	data;
 
 	check_settings(&data, ac, av);
-	set_philo(&data);
+	data.philo = set_philo(&data);
 	set_mutex(&data);
-	gettimeofday(&data.current_time, NULL);
-	set_thread(&data);
+	// gettimeofday(&data.current_time, NULL);
+	// set_thread(&data);
 	return (0);
 }
