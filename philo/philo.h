@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:21:00 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/30 05:55:09 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/30 07:35:21 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,18 @@ typedef struct s_data
 	struct timeval	current_time;
 }					t_data;
 
-int					is_digit(char *str);
-void				check_settings(t_data *data, int ac, char **av);
-
 int					take_fork(t_data *data, t_philo *philo);
 void				philo_eat(t_data *data, t_philo *philo);
 void				philo_sleep(t_data *data, t_philo *philo);
 void				philo_think(t_data *data, t_philo *philo);
-int				check_dead(t_data *data, t_philo *philo);
+int					check_dead(t_data *data, t_philo *philo);
+
+void				destroy_mutex(t_data *data);
+void				destroy_thread(t_data *data);
+void				destroy_philo(t_data *data);
+
+int					is_digit(char *str);
+void				check_settings(t_data *data, int ac, char **av);
 
 void				my_sleep(int time);
 

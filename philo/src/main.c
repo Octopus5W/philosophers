@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/30 06:51:38 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/30 07:32:16 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,20 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (1)
+	while (philo->data->n_eat > 0)
 	{
-		if (take_fork(philo->data, philo))
-		{
-			philo_eat(philo->data, philo);
-			philo_sleep(philo->data, philo);
-		}
-		else
-			philo_think(philo->data, philo);
-		if (philo->data->is_dead || philo->data->n_eat == 0)
+		if (check_dead(philo->data, philo))
 			break;
+		else
+		{
+			if (take_fork(philo->data, philo))
+			{
+				philo_eat(philo->data, philo);
+				philo_sleep(philo->data, philo);
+			}
+			else
+				philo_think(philo->data, philo);
+		}
 	}
 	return (NULL);
 }
