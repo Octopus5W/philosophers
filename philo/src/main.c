@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/30 07:32:16 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/30 10:52:21 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (philo->data->n_eat > 0)
+	while (philo->n_eat < philo->data->n_eat || philo->data->n_eat == -1)
 	{
 		if (check_dead(philo->data, philo))
 			break;
@@ -37,11 +37,15 @@ void	*routine(void *arg)
 		{
 			if (take_fork(philo->data, philo))
 			{
+				printf("philo %d n_eat %d\n", philo->id, philo->n_eat);
 				philo_eat(philo->data, philo);
 				philo_sleep(philo->data, philo);
 			}
 			else
+			{
+				printf("id %d\n", philo->id);
 				philo_think(philo->data, philo);
+			}
 		}
 	}
 	return (NULL);
@@ -106,6 +110,7 @@ void	set_thread(t_data *data)
 		if (tmp == NULL)
 			tmp = data->philo;
 		tmp->last_meal = 0;
+		tmp->last_sleep = 0;
 		if (pthread_create(&tmp->thread, NULL, &routine, tmp))
 		{
 			write(2, "Error: pthread_create failed in set_thread\n", 43);
@@ -133,7 +138,7 @@ void print_philo(t_data *data)
 	{
 		if (tmp == NULL)
 			tmp = data->philo;
-		printf("philo %d\n", tmp->id);
+		printf("philo %d, next %d\n", tmp->id, tmp->next->id);
 		tmp = tmp->next;
 	}
 }
@@ -144,6 +149,8 @@ int	main(int ac, char *av[])
 
 	check_settings(&data, ac, av);
 	data.philo = set_philo(&data);
+	data.is_dead = 0;
+	// print_philo(&data);
 	set_mutex(&data);
 	gettimeofday(&data.current_time, NULL);
 	set_thread(&data);
