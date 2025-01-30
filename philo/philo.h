@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:21:00 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/25 19:41:36 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/30 05:55:09 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ typedef struct s_data
 int					is_digit(char *str);
 void				check_settings(t_data *data, int ac, char **av);
 
-void				take_fork(t_data *data, t_philo *philo);
+int					take_fork(t_data *data, t_philo *philo);
 void				philo_eat(t_data *data, t_philo *philo);
 void				philo_sleep(t_data *data, t_philo *philo);
 void				philo_think(t_data *data, t_philo *philo);
-void				philo_die(t_data *data, t_philo *philo);
+int				check_dead(t_data *data, t_philo *philo);
 
 void				my_sleep(int time);
 

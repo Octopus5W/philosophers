@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/29 12:00:26 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/30 06:51:38 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ long	get_ms(t_data *data)
 	time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
 	time -= (data->current_time.tv_sec * 1000) + \
 	(data->current_time.tv_usec / 1000);
-	return (time);
+	return (time); 
 }
 
 void	*routine(void *arg)
@@ -31,12 +31,15 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	while (1)
 	{
-		take_fork(philo->data, philo);
-		philo_eat(philo->data, philo);
-		philo_sleep(philo->data, philo);
-		philo_think(philo->data, philo);
+		if (take_fork(philo->data, philo))
+		{
+			philo_eat(philo->data, philo);
+			philo_sleep(philo->data, philo);
+		}
+		else
+			philo_think(philo->data, philo);
 		if (philo->data->is_dead || philo->data->n_eat == 0)
-			exit(1);
+			break;
 	}
 	return (NULL);
 }
@@ -139,7 +142,7 @@ int	main(int ac, char *av[])
 	check_settings(&data, ac, av);
 	data.philo = set_philo(&data);
 	set_mutex(&data);
-	// gettimeofday(&data.current_time, NULL);
-	// set_thread(&data);
+	gettimeofday(&data.current_time, NULL);
+	set_thread(&data);
 	return (0);
 }
