@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/30 10:52:21 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/01/30 10:58:45 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ void	*routine(void *arg)
 		{
 			if (take_fork(philo->data, philo))
 			{
-				printf("philo %d n_eat %d\n", philo->id, philo->n_eat);
+				// printf("philo %d n_eat %d\n", philo->id, philo->n_eat);
 				philo_eat(philo->data, philo);
 				philo_sleep(philo->data, philo);
 			}
 			else
 			{
-				printf("id %d\n", philo->id);
+				// printf("id %d\n", philo->id);
 				philo_think(philo->data, philo);
 			}
 		}
@@ -138,7 +138,7 @@ void print_philo(t_data *data)
 	{
 		if (tmp == NULL)
 			tmp = data->philo;
-		printf("philo %d, next %d\n", tmp->id, tmp->next->id);
+		// printf("philo %d, next %d\n", tmp->id, tmp->next->id);
 		tmp = tmp->next;
 	}
 }
