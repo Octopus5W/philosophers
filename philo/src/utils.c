@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 19:27:20 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/25 19:55:59 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/05 09:47:16 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	my_sleep(int time)
 {
 	while (time > 0)
 	{
-		usleep(500);
-		usleep(500);
-		time -= 1000;
+		usleep(25);
+		usleep(25);
+		time -= 50;
 	}
 }

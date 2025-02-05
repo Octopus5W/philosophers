@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/30 10:58:45 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/05 11:00:07 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ long	get_ms(t_data *data)
 
 	gettimeofday(&current_time, NULL);
 	time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
-	time -= (data->current_time.tv_sec * 1000) + \
-	(data->current_time.tv_usec / 1000);
-	return (time); 
+	time -= (data->current_time.tv_sec * 1000) + (data->current_time.tv_usec
+			/ 1000);
+	return (time);
 }
 
 void	*routine(void *arg)
@@ -29,29 +29,34 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	philo->last_meal = get_ms(philo->data);
 	while (philo->n_eat < philo->data->n_eat || philo->data->n_eat == -1)
 	{
+		pthread_mutex_lock(&philo->data->mutex_print);
+		// printf("calcaul = %ld \t time to die %d \n", (get_ms(philo->data)
+		// - philo->last_meal - philo->last_sleep), philo->data->t_die);
+		// printf("getms %ld\n", get_ms(philo->data));
+		printf("getms %ld\n", get_ms(philo->data));
+		printf("philo %i last eat %ld\n", philo->id, philo->last_meal);
+		printf("philo %i last sleep %ld\n", philo->id, philo->last_sleep);
+		pthread_mutex_unlock(&philo->data->mutex_print);
 		if (check_dead(philo->data, philo))
-			break;
+			break ;
 		else
 		{
 			if (take_fork(philo->data, philo))
 			{
-				// printf("philo %d n_eat %d\n", philo->id, philo->n_eat);
 				philo_eat(philo->data, philo);
 				philo_sleep(philo->data, philo);
 			}
 			else
-			{
-				// printf("id %d\n", philo->id);
 				philo_think(philo->data, philo);
-			}
 		}
 	}
 	return (NULL);
 }
 
-t_philo*	set_philo(t_data *data)
+t_philo	*set_philo(t_data *data)
 {
 	int		i;
 	t_philo	*tmp;
@@ -77,7 +82,7 @@ t_philo*	set_philo(t_data *data)
 		data->philo->data = data;
 	}
 	first->prev = data->philo;
-	return(data->philo->next = first);
+	return (data->philo->next = first);
 }
 
 int	set_mutex(t_data *data)
@@ -126,10 +131,9 @@ void	set_thread(t_data *data)
 		pthread_join(tmp->thread, NULL);
 		tmp = tmp->next;
 	}
-		
 }
 
-void print_philo(t_data *data)
+void	print_philo(t_data *data)
 {
 	t_philo	*tmp;
 
@@ -138,7 +142,6 @@ void print_philo(t_data *data)
 	{
 		if (tmp == NULL)
 			tmp = data->philo;
-		// printf("philo %d, next %d\n", tmp->id, tmp->next->id);
 		tmp = tmp->next;
 	}
 }
@@ -150,7 +153,6 @@ int	main(int ac, char *av[])
 	check_settings(&data, ac, av);
 	data.philo = set_philo(&data);
 	data.is_dead = 0;
-	// print_philo(&data);
 	set_mutex(&data);
 	gettimeofday(&data.current_time, NULL);
 	set_thread(&data);

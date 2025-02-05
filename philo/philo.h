@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:21:00 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/01/30 07:35:21 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/05 09:46:29 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h>
 # include <sys/time.h>
+# include <unistd.h>
 
 typedef struct s_philo
 {
