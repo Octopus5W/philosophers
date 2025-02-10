@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/05 11:00:07 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:37:44 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,10 @@ void	*routine(void *arg)
 	philo->last_meal = get_ms(philo->data);
 	while (philo->n_eat < philo->data->n_eat || philo->data->n_eat == -1)
 	{
-		pthread_mutex_lock(&philo->data->mutex_print);
-		// printf("calcaul = %ld \t time to die %d \n", (get_ms(philo->data)
-		// - philo->last_meal - philo->last_sleep), philo->data->t_die);
-		// printf("getms %ld\n", get_ms(philo->data));
-		printf("getms %ld\n", get_ms(philo->data));
-		printf("philo %i last eat %ld\n", philo->id, philo->last_meal);
-		printf("philo %i last sleep %ld\n", philo->id, philo->last_sleep);
-		pthread_mutex_unlock(&philo->data->mutex_print);
 		if (check_dead(philo->data, philo))
 			break ;
-		else
+		else if ((philo->n_eat < philo->data->n_eat || philo->data->n_eat ==
+				-1))
 		{
 			if (take_fork(philo->data, philo))
 			{
