@@ -6,137 +6,50 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/10 14:37:44 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/16 12:15:21 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-long	get_ms(t_data *data)
-{
-	struct timeval	current_time;
-	long			time;
+// void	print_philo(t_data *data) // delete before last push
+// {
+// 	t_philo *tmp;
 
-	gettimeofday(&current_time, NULL);
-	time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
-	time -= (data->current_time.tv_sec * 1000) + (data->current_time.tv_usec
-			/ 1000);
-	return (time);
+// 	tmp = NULL;
+// 	while (tmp != data->philo)
+// 	{
+// 		if (tmp == NULL)
+// 			tmp = data->philo;
+// 		tmp = tmp->next;
+// 	}
+// }
+int	check_dead(t_philo *philo)
+{
+	if (philo->last_meal)
 }
 
-void	*routine(void *arg)
+void	superpower(void *arg)
 {
-	t_philo	*philo;
+	t_data	*data;
+	int		*count_eat;
 
-	philo = (t_philo *)arg;
-	philo->last_meal = get_ms(philo->data);
-	while (philo->n_eat < philo->data->n_eat || philo->data->n_eat == -1)
+	data = (t_data *)arg;
+	while (data->is_dead == 0)
 	{
-		if (check_dead(philo->data, philo))
+		if (data->philo->t_die <= data->reference_time - get_ms())
+		{
+			print_message("is dead", data->mutex_print, data->philo);
 			break ;
-		else if ((philo->n_eat < philo->data->n_eat || philo->data->n_eat ==
-				-1))
-		{
-			if (take_fork(philo->data, philo))
-			{
-				philo_eat(philo->data, philo);
-				philo_sleep(philo->data, philo);
-			}
-			else
-				philo_think(philo->data, philo);
 		}
-	}
-	return (NULL);
-}
-
-t_philo	*set_philo(t_data *data)
-{
-	int		i;
-	t_philo	*tmp;
-	t_philo	*first;
-
-	i = -1;
-	tmp = NULL;
-	while (++i < data->n_philo)
-	{
-		data->philo = malloc(sizeof(t_philo));
-		if (tmp)
-			tmp->next = data->philo;
-		if (i == 0)
-			first = data->philo;
-		data->philo->id = i + 1;
-		data->philo->fork = 1;
-		data->philo->is_eating = 0;
-		data->philo->is_sleeping = 0;
-		data->philo->is_thinking = 0;
-		data->philo->n_eat = 0;
-		data->philo->prev = tmp;
-		tmp = data->philo;
-		data->philo->data = data;
-	}
-	first->prev = data->philo;
-	return (data->philo->next = first);
-}
-
-int	set_mutex(t_data *data)
-{
-	t_philo	*tmp;
-
-	tmp = NULL;
-	while (tmp != data->philo)
-	{
-		if (tmp == NULL)
-			tmp = data->philo;
-		if (pthread_mutex_init(&tmp->mutex_fork, NULL))
-			return (1);
-		tmp = tmp->next;
-	}
-	if (pthread_mutex_init(&data->mutex_dead, NULL))
-		return (1);
-	if (pthread_mutex_init(&data->mutex_print, NULL))
-		return (1);
-	return (0);
-}
-
-void	set_thread(t_data *data)
-{
-	t_philo	*tmp;
-
-	tmp = NULL;
-	while (tmp != data->philo)
-	{
-		if (tmp == NULL)
-			tmp = data->philo;
-		tmp->last_meal = 0;
-		tmp->last_sleep = 0;
-		if (pthread_create(&tmp->thread, NULL, &routine, tmp))
-		{
-			write(2, "Error: pthread_create failed in set_thread\n", 43);
-			exit(1);
-		}
-		tmp = tmp->next;
-	}
-	tmp = NULL;
-	while (tmp != data->philo)
-	{
-		if (tmp == NULL)
-			tmp = data->philo;
-		pthread_join(tmp->thread, NULL);
-		tmp = tmp->next;
+		data->philo = data->philo->next;
 	}
 }
 
-void	print_philo(t_data *data)
+int	create_supervisor(t_data *data)
 {
-	t_philo	*tmp;
-
-	tmp = NULL;
-	while (tmp != data->philo)
-	{
-		if (tmp == NULL)
-			tmp = data->philo;
-		tmp = tmp->next;
-	}
+	pthread_create(&data->supervisor, NULL, &superpower, data);
+	pthread_detach(&data->supervisor);
 }
 
 int	main(int ac, char *av[])
@@ -146,8 +59,14 @@ int	main(int ac, char *av[])
 	check_settings(&data, ac, av);
 	data.philo = set_philo(&data);
 	data.is_dead = 0;
-	set_mutex(&data);
-	gettimeofday(&data.current_time, NULL);
-	set_thread(&data);
+	if (set_mutex(&data))
+		return (1);
+	data.reference_time = get_ms();
+	if (data.reference_time == -1)
+		return (1);
+	if (create_supervisor(&data))
+		return (1);
+	if (set_thread(&data))
+		return (1);
 	return (0);
 }
