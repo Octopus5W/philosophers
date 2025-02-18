@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 19:27:20 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/16 12:13:39 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:31:38 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,35 @@ long	get_ms(void)
 	return (time);
 }
 
-void	my_sleep(long usec)
+void	my_sleep(long usec, t_data *data)
 {
-	while (usec > 0)
+	usec *= 1000;
+	while (usec > 0 && !data->is_dead)
 	{
 		usleep(1000);
 		usec -= 1000;
 	}
 }
 
-void	print_message(char *str, pthread_mutex_t mutex, t_philo *philo)
+void	print_message(char *str, t_philo *philo)
 {
-	long ms;
-	
-	pthread_mutex_lock(&mutex);
-	ms = get_ms();
-	if (philo->data->is_dead == 0)
+	long	t_current;
+
+	pthread_mutex_lock(&philo->data->mutex_dead);
+	pthread_mutex_lock(&philo->data->mutex_print);
+	if (philo->data->is_dead == 0 || str[3] == 'd')
 	{
-		printf("%ld philo %i %s\n", ms - philo->data->reference_time, philo->id, str);
-		if (str[3] == 'e')
-			philo->last_meal == ms;
+		t_current = get_ms();
+		printf("%ld philo %i %s\n", t_current - philo->data->t_reference,
+			philo->id, str);
+		if (str[3] == 'd')
+			philo->data->is_dead = 1;
+		else if (str[3] == 'e')
+		{
+			philo->t_die += philo->data->t_die;
+			philo->last_meal = t_current;
+		}
 	}
-	if (str[3] == 'd')
-		philo->data->is_dead == 1;
-	pthread_mutex_unlock(&mutex);
+	pthread_mutex_unlock(&philo->data->mutex_print);
+	pthread_mutex_unlock(&philo->data->mutex_dead);
 }

@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 18:20:31 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/01 18:38:25 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:14:15 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	destroy_mutex(t_data *data)
 		pthread_mutex_destroy(&tmp->mutex_fork);
 		tmp = tmp->next;
 	}
-	pthread_mutex_destroy(&data->mutex_dead);
 	pthread_mutex_destroy(&data->mutex_print);
 }
 
@@ -37,7 +36,7 @@ void	destroy_thread(t_data *data)
 	{
 		if (tmp == NULL)
 			tmp = data->philo;
-		pthread_join(tmp->thread, NULL);
+		pthread_join(tmp->thread_philo, NULL);
 		tmp = tmp->next;
 	}
 }
