@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:54 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/01 18:20:41 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:48:32 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,4 @@ void	check_settings(t_data *data, int ac, char **av)
 		data->n_eat = atoi(av[5]);
 	else
 		data->n_eat = -1;
-	if (data->t_die < 60)
-		write(2, "Error: time to die must be at least 60ms\n", 41);
-	if (data->t_eat < 60)
-		write(2, "Error: time to eat must be at least 60ms\n", 41);
-	if (data->t_sleep < 60)
-		write(2, "Error: time to sleep must be at least 60ms\n", 43);
 }

@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 18:20:31 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/18 15:14:15 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:45:28 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,42 +15,60 @@
 void	destroy_mutex(t_data *data)
 {
 	t_philo	*tmp;
+	int		i;
 
 	tmp = NULL;
+	i = 0;
 	while (tmp != data->philo)
 	{
 		if (tmp == NULL)
 			tmp = data->philo;
-		pthread_mutex_destroy(&tmp->mutex_fork);
+		if (i++ < data->count_mutex)
+			pthread_mutex_destroy(&tmp->mutex_fork);
 		tmp = tmp->next;
 	}
-	pthread_mutex_destroy(&data->mutex_print);
+	if (data->count_mutex == data->n_philo + 1)
+		pthread_mutex_destroy(&data->mutex_print);
+	if (data->count_mutex == data->n_philo + 2)
+		pthread_mutex_destroy(&data->mutex_dead);
+	destroy_philo(&data);
 }
 
 void	destroy_thread(t_data *data)
 {
 	t_philo	*tmp;
 
-	tmp = NULL;
-	while (tmp != data->philo)
+	tmp = data->philo;
+	while (data->count_thread > data->n_eat)
 	{
-		if (tmp == NULL)
-			tmp = data->philo;
+		pthread_join(tmp->thread_supervisor, NULL);
+		tmp = tmp->next;
+	}
+	tmp = data->philo;
+	while (data->count_thread > 0)
+	{
 		pthread_join(tmp->thread_philo, NULL);
 		tmp = tmp->next;
 	}
+	destroy_mutex(&data);
 }
 
 void	destroy_philo(t_data *data)
 {
 	t_philo *tmp;
-	t_philo *tmp2;
+	t_philo *next;
 
-	tmp = data->philo;
+	tmp = NULL;
 	while (tmp != data->philo)
 	{
-		tmp2 = tmp;
-		tmp = tmp->next;
-		free(tmp2);
+		if (tmp == NULL)
+			tmp = data->philo;
+		next = tmp->next;
+		if (tmp)
+		{
+			free(tmp);
+			tmp = NULL;
+		}
+		tmp = next;
 	}
 }

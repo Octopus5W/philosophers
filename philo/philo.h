@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:21:00 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/18 15:47:13 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:06:59 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,14 @@ typedef struct s_data
 {
 	int				n_philo;
 	int				n_eat;
+	int				is_dead;
+	int				has_eat;
 	long			t_eat;
 	long			t_sleep;
 	long			t_die;
-	int				is_dead;
-	int				has_eat;
 	long			t_reference;
+	int				count_mutex;
+	int				count_thread;
 	pthread_mutex_t	mutex_print;
 	pthread_mutex_t	mutex_dead;
 	t_philo			*philo;
@@ -61,7 +63,7 @@ void				destroy_mutex(t_data *data);
 void				destroy_thread(t_data *data);
 void				destroy_philo(t_data *data);
 
-t_philo				*set_philo(t_data *data);
+int					set_philo(t_data *data);
 int					set_mutex(t_data *data);
 int					set_thread(t_data *data);
 
