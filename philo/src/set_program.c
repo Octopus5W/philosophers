@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/18 16:13:46 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/18 19:30:24 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,9 @@ int	set_mutex(t_data *data)
 int	set_thread(t_data *data)
 {
 	t_philo	*tmp;
-	long	ms;
 
 	tmp = NULL;
-	if ((ms = get_ms()) == -1)
-		return (1);
-	data->t_reference = ms;
+	data->t_reference = get_ms();
 	while (tmp != data->philo)
 	{
 		if (tmp == NULL)

@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/18 19:20:59 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/18 19:28:56 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 void	*superpower(void *arg)
 {
 	t_philo	*philo;
-	long	ms;
 
 	philo = (t_philo *)arg;
-	while ((ms = get_ms()) < philo->t_die && ms != -1)
+	while (get_ms() < philo->t_die)
 	{
 		pthread_mutex_lock(&philo->data->mutex_dead);
 		if (philo->data->is_dead)
@@ -29,10 +28,14 @@ void	*superpower(void *arg)
 		else
 			pthread_mutex_unlock(&philo->data->mutex_dead);
 	}
-	if (ms == -1)
-		return ((void *)1);
+	pthread_mutex_lock(&philo->data->mutex_dead);
 	if (philo->t_die > philo->last_meal && !philo->data->is_dead)
+	{
+		pthread_mutex_unlock(&philo->data->mutex_dead);
 		print_message("is dead", philo);
+	}
+	else
+		pthread_mutex_unlock(&philo->data->mutex_dead);
 	return ((void *)0);
 }
 
