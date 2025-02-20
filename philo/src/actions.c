@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/20 08:24:35 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/20 09:57:05 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,11 @@ void	philo_sleep(t_data *data, t_philo *philo)
 void	philo_think(t_philo *philo)
 {
 	print_message("is thinking", philo);
+}
+
+void	is_dead(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->mutex_dead);
+	philo->data->is_dead = 1;
+	pthread_mutex_unlock(&philo->data->mutex_dead);
 }
