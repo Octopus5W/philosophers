@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/20 08:11:22 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/20 08:24:35 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	philo_sleep(t_data *data, t_philo *philo)
 	my_sleep(data->t_sleep, data);
 	philo_think(philo);
 }
+
 void	philo_think(t_philo *philo)
 {
 	print_message("is thinking", philo);

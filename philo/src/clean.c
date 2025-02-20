@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 18:20:31 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/19 16:27:58 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/20 08:25:07 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ void	destroy_thread(t_data *data)
 
 void	destroy_philo(t_data *data)
 {
-	t_philo *tmp;
-	t_philo *next;
+	t_philo	*tmp;
+	t_philo	*next;
 
 	tmp = NULL;
 	while (tmp != data->philo)

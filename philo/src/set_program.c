@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/19 15:34:21 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/20 08:24:40 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,15 @@ int	set_mutex(t_data *data)
 		if (tmp == NULL)
 			tmp = data->philo;
 		if (pthread_mutex_init(&tmp->mutex_fork, NULL))
-			return (write(2, "Error: mutex\n", 13),1);
+			return (write(2, "Error: mutex\n", 13), 1);
 		data->count_mutex++;
 		tmp = tmp->next;
 	}
 	if (pthread_mutex_init(&data->mutex_print, NULL))
-		return (write(2, "Error: mutex\n", 13),1);
+		return (write(2, "Error: mutex\n", 13), 1);
 	data->count_mutex++;
 	if (pthread_mutex_init(&data->mutex_dead, NULL))
-		return (write(2, "Error: mutex\n", 13),1);
+		return (write(2, "Error: mutex\n", 13), 1);
 	data->count_mutex++;
 	return (0);
 }
