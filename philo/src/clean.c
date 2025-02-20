@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 18:20:31 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/19 15:45:28 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:27:58 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	destroy_mutex(t_data *data)
 		pthread_mutex_destroy(&data->mutex_print);
 	if (data->count_mutex == data->n_philo + 2)
 		pthread_mutex_destroy(&data->mutex_dead);
-	destroy_philo(&data);
+	destroy_philo(data);
 }
 
 void	destroy_thread(t_data *data)
@@ -50,7 +50,7 @@ void	destroy_thread(t_data *data)
 		pthread_join(tmp->thread_philo, NULL);
 		tmp = tmp->next;
 	}
-	destroy_mutex(&data);
+	destroy_mutex(data);
 }
 
 void	destroy_philo(t_data *data)

@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:21:00 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/19 15:06:59 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/20 08:20:01 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void				take_fork(t_data *data, t_philo *philo);
 void				philo_eat(t_data *data, t_philo *philo);
 void				philo_sleep(t_data *data, t_philo *philo);
 void				philo_think(t_philo *philo);
+void				check_eat(t_philo *philo);
 
 void				destroy_mutex(t_data *data);
 void				destroy_thread(t_data *data);
