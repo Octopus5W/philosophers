@@ -6,20 +6,20 @@
 #    By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/11 16:20:50 by hdelbecq          #+#    #+#              #
-#    Updated: 2025/02/20 07:49:18 by hdelbecq         ###   ########.fr        #
+#    Updated: 2025/02/20 09:09:17 by hdelbecq         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 SRC =	src/actions.c src/clean.c src/main.c src/parsing.c src/set_program.c src/utils.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) 
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 clean:
 	rm -f $(OBJ)
 

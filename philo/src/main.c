@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/20 08:25:25 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/20 09:00:14 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	*superpower(void *arg)
 			print_message("die", philo);
 		pthread_mutex_unlock(&philo->data->mutex_dead);
 	}
-	return ((void *)0);
+	return (NULL);
 }
 
 void	*routine(void *arg)
@@ -36,12 +36,12 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	philo->t_die = philo->data->t_reference + philo->data->t_die;
 	if (pthread_create(&philo->thread_supervisor, NULL, &superpower, philo))
-		return ((void *)1);
+		return (NULL);
 	philo->data->count_thread++;
 	while (!philo->data->is_dead)
 		take_fork(philo->data, philo);
 	pthread_join(philo->thread_supervisor, NULL);
-	return ((void *)0);
+	return (NULL);
 }
 
 int	main(int ac, char *av[])
