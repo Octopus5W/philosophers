@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:21:00 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/20 09:57:30 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:32:56 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct s_philo
 	long			t_die;
 	pthread_mutex_t	mutex_fork;
 	pthread_t		thread_philo;
-	pthread_t		thread_supervisor;
 	struct s_data	*data;
 	struct s_philo	*prev;
 	struct s_philo	*next;
@@ -47,6 +46,7 @@ typedef struct s_data
 	int				count_thread;
 	pthread_mutex_t	mutex_print;
 	pthread_mutex_t	mutex_dead;
+	pthread_t		thread_supervisor;
 	t_philo			*philo;
 	struct timeval	time;
 }					t_data;
