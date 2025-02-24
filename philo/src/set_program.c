@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/20 11:50:10 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/24 21:38:30 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,37 @@ int	set_mutex(t_data *data)
 
 int	set_thread(t_data *data)
 {
-	t_philo	*tmp;
-
-	tmp = NULL;
 	data->t_reference = get_ms();
 	if (pthread_create(&data->thread_supervisor, NULL, &superpower, data))
 		return (write(2, "Error: pthread_create\n", 22), 1);
 	data->count_thread++;
-	while (tmp != data->philo)
+	if (set_thread_philo(data))
+		return (write(2, "Error: pthread_create\n", 22), 1);
+	return (0);
+}
+
+int	set_thread_philo(t_data *data)
+{
+	t_philo	*tmp;
+
+	tmp = NULL;
+	if (data->n_philo == 1)
 	{
-		if (tmp == NULL)
-			tmp = data->philo;
 		if (pthread_create(&tmp->thread_philo, NULL, &routine, tmp))
 			return (write(2, "Error: pthread_create\n", 22), 1);
 		data->count_thread++;
-		tmp = tmp->next;
+	}
+	else
+	{
+		while (tmp != data->philo)
+		{
+			if (tmp == NULL)
+				tmp = data->philo;
+			if (pthread_create(&tmp->thread_philo, NULL, &routine, tmp))
+				return (write(2, "Error: pthread_create\n", 22), 1);
+			data->count_thread++;
+			tmp = tmp->next;
+		}
 	}
 	return (0);
 }

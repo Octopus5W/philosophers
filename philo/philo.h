@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:21:00 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/20 11:32:56 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/24 21:20:07 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void				destroy_philo(t_data *data);
 int					set_philo(t_data *data);
 int					set_mutex(t_data *data);
 int					set_thread(t_data *data);
+int					set_thread_philo(t_data *data);
 
 void				*routine(void *arg);
 void				*superpower(void *arg);
