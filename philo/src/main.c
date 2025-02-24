@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/24 21:41:21 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/24 22:37:18 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-void	*one_philo(void *arg)
+void	*routine_one_philo(void *arg)
 {
 	t_philo	*philo;
 

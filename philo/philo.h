@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:21:00 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/24 21:20:07 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/24 22:37:34 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int					set_thread_philo(t_data *data);
 
 void				*routine(void *arg);
 void				*superpower(void *arg);
+void				*routine_one_philo(void *arg);
 
 long				get_ms(void);
 void				my_sleep(long usec, t_data *data);

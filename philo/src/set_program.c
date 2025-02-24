@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/24 21:38:30 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/02/25 00:30:53 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,16 @@ int	set_thread_philo(t_data *data)
 {
 	t_philo	*tmp;
 
-	tmp = NULL;
 	if (data->n_philo == 1)
 	{
-		if (pthread_create(&tmp->thread_philo, NULL, &routine, tmp))
+		tmp = data->philo;
+		if (pthread_create(&tmp->thread_philo, NULL, &routine_one_philo, tmp))
 			return (write(2, "Error: pthread_create\n", 22), 1);
 		data->count_thread++;
 	}
 	else
 	{
+		tmp = NULL;
 		while (tmp != data->philo)
 		{
 			if (tmp == NULL)
