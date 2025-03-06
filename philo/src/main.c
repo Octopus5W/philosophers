@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/24 22:37:18 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/06 12:31:56 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,23 @@
 void	*superpower(void *arg)
 {
 	t_data	*data;
+	t_philo	*tmp;
 
 	data = (t_data *)arg;
-	while (!data->philo->t_die || (get_ms() < data->philo->t_die
-			&& !data->is_dead))
-		data->philo = data->philo->next;
-	if (data->philo->t_die > data->philo->last_meal)
+	tmp = data->philo;
+	while (1)
 	{
 		pthread_mutex_lock(&data->mutex_dead);
-		if (!data->is_dead)
-			print_message("die", data->philo);
+		if ((data->philo->t_die && get_ms() >= data->philo->t_die)
+			|| data->is_dead)
+		{
+			if (!data->is_dead)
+				print_message("die", data->philo);
+			pthread_mutex_unlock(&data->mutex_dead);
+			break ;
+		}
 		pthread_mutex_unlock(&data->mutex_dead);
+		tmp = tmp->next;
 	}
 	return (NULL);
 }
@@ -35,11 +41,14 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	pthread_mutex_lock(&philo->data->mutex_dead);
 	philo->t_die = philo->data->t_reference + philo->data->t_die;
-	philo->data->count_thread++;
-	while (!philo->data->is_dead)
+	pthread_mutex_unlock(&philo->data->mutex_dead);
+	while (1)
 	{
-		take_fork(philo->data, philo);
+		if (is_dead(philo->data))
+			break ;
+		take_fork(philo);
 		philo_eat(philo->data, philo);
 		philo_sleep(philo->data, philo);
 		philo_think(philo);
@@ -52,11 +61,22 @@ void	*routine_one_philo(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	pthread_mutex_lock(&philo->data->mutex_dead);
 	philo->t_die = philo->data->t_reference + philo->data->t_die;
+	pthread_mutex_unlock(&philo->data->mutex_dead);
 	pthread_mutex_lock(&philo->mutex_fork);
 	print_message("has taken a fork", philo);
-	while (!philo->data->is_dead)
+	while (1)
+	{
+		pthread_mutex_lock(&philo->data->mutex_dead);
+		if (philo->data->is_dead)
+		{
+			pthread_mutex_unlock(&philo->data->mutex_dead);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->data->mutex_dead);
 		usleep(500);
+	}
 	pthread_mutex_unlock(&philo->mutex_fork);
 	return (NULL);
 }

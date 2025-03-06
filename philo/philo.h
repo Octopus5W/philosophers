@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:21:00 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/24 22:37:34 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/04 18:59:33 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ typedef struct s_philo
 {
 	int				id;
 	int				n_eat;
-	long			last_meal;
 	long			t_die;
 	pthread_mutex_t	mutex_fork;
 	pthread_t		thread_philo;
@@ -54,11 +53,11 @@ typedef struct s_data
 int					is_digit(char *str);
 void				check_settings(t_data *data, int ac, char **av);
 
-void				take_fork(t_data *data, t_philo *philo);
+void				take_fork(t_philo *philo);
 void				philo_eat(t_data *data, t_philo *philo);
 void				philo_sleep(t_data *data, t_philo *philo);
 void				philo_think(t_philo *philo);
-void				is_dead(t_philo *philo);
+int					is_dead(t_data *data);
 
 void				destroy_mutex(t_data *data);
 void				destroy_thread(t_data *data);
@@ -74,7 +73,7 @@ void				*superpower(void *arg);
 void				*routine_one_philo(void *arg);
 
 long				get_ms(void);
-void				my_sleep(long usec, t_data *data);
+void				my_sleep(long t_reference, long msec, t_data *data);
 void				print_message(char *str, t_philo *philo);
 void				check_eat(t_philo *philo);
 

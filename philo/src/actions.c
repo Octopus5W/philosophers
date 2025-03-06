@@ -6,13 +6,13 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/24 21:43:55 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/04 19:29:17 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	take_fork(t_data *data, t_philo *philo)
+void	take_fork(t_philo *philo)
 {
 	if (philo->id % 2 == 1)
 	{
@@ -20,7 +20,6 @@ void	take_fork(t_data *data, t_philo *philo)
 		print_message("has taken a fork", philo);
 		pthread_mutex_lock(&philo->mutex_fork);
 		print_message("has taken a fork", philo);
-		philo_eat(data, philo);
 	}
 	else
 	{
@@ -34,15 +33,23 @@ void	take_fork(t_data *data, t_philo *philo)
 void	philo_eat(t_data *data, t_philo *philo)
 {
 	print_message("is eating", philo);
-	my_sleep(data->t_eat, data);
-	pthread_mutex_unlock(&philo->next->mutex_fork);
-	pthread_mutex_unlock(&philo->mutex_fork);
+	my_sleep(get_ms(), data->t_eat, data);
+	if (philo->id % 2 == 1)
+	{
+		pthread_mutex_unlock(&philo->mutex_fork);
+		pthread_mutex_unlock(&philo->next->mutex_fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(&philo->next->mutex_fork);
+		pthread_mutex_unlock(&philo->mutex_fork);
+	}
 }
 
 void	philo_sleep(t_data *data, t_philo *philo)
 {
 	print_message("is sleeping", philo);
-	my_sleep(data->t_sleep, data);
+	my_sleep(get_ms(), data->t_sleep, data);
 }
 
 void	philo_think(t_philo *philo)
@@ -50,9 +57,17 @@ void	philo_think(t_philo *philo)
 	print_message("is thinking", philo);
 }
 
-void	is_dead(t_philo *philo)
+int	is_dead(t_data *data)
 {
-	pthread_mutex_lock(&philo->data->mutex_dead);
-	philo->data->is_dead = 1;
-	pthread_mutex_unlock(&philo->data->mutex_dead);
+	// pthread_mutex_lock(&data->mutex_dead);
+	if (data->is_dead)
+	{
+		// pthread_mutex_unlock(&data->mutex_dead);
+		return (1);
+	}
+	else
+	{
+		// pthread_mutex_unlock(&data->mutex_dead);
+		return (0);
+	}
 }
