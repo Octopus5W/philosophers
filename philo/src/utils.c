@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 19:27:20 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/07 16:16:40 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/07 17:29:13 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,15 @@ void	my_sleep(long t_reference, long msec)
 
 void	print_message(char *str, t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->mutex_print);
 	if (!is_dead(philo->data))
 	{
+		pthread_mutex_lock(&philo->data->mutex_print);
 		printf("%ld %i %s\n", get_ms() - philo->data->t_reference, philo->id,
 			str);
+		pthread_mutex_unlock(&philo->data->mutex_print);
 		if (str[3] == 'e')
 			check_eat(philo);
-		pthread_mutex_unlock(&philo->data->mutex_print);
 	}
-	else
-		pthread_mutex_unlock(&philo->data->mutex_print);
 }
 
 void	print_die(char *str, t_philo *philo)

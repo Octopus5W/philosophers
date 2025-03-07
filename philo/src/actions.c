@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/07 17:08:16 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/07 17:30:36 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ void	philo_eat(t_data *data, t_philo *philo)
 {
 	print_message("is eating", philo);
 	my_sleep(get_ms(), data->t_eat);
-	// pthread_mutex_unlock(&philo->next->mutex_fork);
-	// pthread_mutex_unlock(&philo->mutex_fork);
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_unlock(&philo->mutex_fork);
