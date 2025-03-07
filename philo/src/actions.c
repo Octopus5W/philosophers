@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/04 19:29:17 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/07 17:08:16 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	take_fork(t_philo *philo)
 {
-	if (philo->id % 2 == 1)
+	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->next->mutex_fork);
 		print_message("has taken a fork", philo);
@@ -33,8 +33,10 @@ void	take_fork(t_philo *philo)
 void	philo_eat(t_data *data, t_philo *philo)
 {
 	print_message("is eating", philo);
-	my_sleep(get_ms(), data->t_eat, data);
-	if (philo->id % 2 == 1)
+	my_sleep(get_ms(), data->t_eat);
+	// pthread_mutex_unlock(&philo->next->mutex_fork);
+	// pthread_mutex_unlock(&philo->mutex_fork);
+	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_unlock(&philo->mutex_fork);
 		pthread_mutex_unlock(&philo->next->mutex_fork);
@@ -49,7 +51,7 @@ void	philo_eat(t_data *data, t_philo *philo)
 void	philo_sleep(t_data *data, t_philo *philo)
 {
 	print_message("is sleeping", philo);
-	my_sleep(get_ms(), data->t_sleep, data);
+	my_sleep(get_ms(), data->t_sleep);
 }
 
 void	philo_think(t_philo *philo)
@@ -59,15 +61,15 @@ void	philo_think(t_philo *philo)
 
 int	is_dead(t_data *data)
 {
-	// pthread_mutex_lock(&data->mutex_dead);
+	pthread_mutex_lock(&data->mutex_dead);
 	if (data->is_dead)
 	{
-		// pthread_mutex_unlock(&data->mutex_dead);
+		pthread_mutex_unlock(&data->mutex_dead);
 		return (1);
 	}
 	else
 	{
-		// pthread_mutex_unlock(&data->mutex_dead);
+		pthread_mutex_unlock(&data->mutex_dead);
 		return (0);
 	}
 }

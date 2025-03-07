@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/06 12:31:56 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:12:24 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,23 @@ void	*superpower(void *arg)
 {
 	t_data	*data;
 	t_philo	*tmp;
+	long	time;
 
 	data = (t_data *)arg;
 	tmp = data->philo;
+	usleep(10000);
 	while (1)
 	{
 		pthread_mutex_lock(&data->mutex_dead);
-		if ((data->philo->t_die && get_ms() >= data->philo->t_die)
-			|| data->is_dead)
+		time = get_ms();
+		if ((tmp->t_die && time >= tmp->t_die) || data->is_dead)
 		{
-			if (!data->is_dead)
-				print_message("die", data->philo);
+			print_die("die", tmp);
 			pthread_mutex_unlock(&data->mutex_dead);
 			break ;
 		}
 		pthread_mutex_unlock(&data->mutex_dead);
+		usleep(300);
 		tmp = tmp->next;
 	}
 	return (NULL);
@@ -66,17 +68,7 @@ void	*routine_one_philo(void *arg)
 	pthread_mutex_unlock(&philo->data->mutex_dead);
 	pthread_mutex_lock(&philo->mutex_fork);
 	print_message("has taken a fork", philo);
-	while (1)
-	{
-		pthread_mutex_lock(&philo->data->mutex_dead);
-		if (philo->data->is_dead)
-		{
-			pthread_mutex_unlock(&philo->data->mutex_dead);
-			break ;
-		}
-		pthread_mutex_unlock(&philo->data->mutex_dead);
-		usleep(500);
-	}
+	my_sleep(get_ms(), philo->data->t_eat);
 	pthread_mutex_unlock(&philo->mutex_fork);
 	return (NULL);
 }

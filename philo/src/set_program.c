@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/04 16:46:02 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:01:30 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ int	set_mutex(t_data *data)
 int	set_thread(t_data *data)
 {
 	data->t_reference = get_ms();
+	if (set_thread_philo(data))
+		return (write(2, "Error: pthread_create\n", 22), 1);
 	if (pthread_create(&data->thread_supervisor, NULL, &superpower, data))
 		return (write(2, "Error: pthread_create\n", 22), 1);
 	data->count_thread++;
-	if (set_thread_philo(data))
-		return (write(2, "Error: pthread_create\n", 22), 1);
 	return (0);
 }
 

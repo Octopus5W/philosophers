@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 18:20:31 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/20 11:51:24 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:05:33 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ void	destroy_thread(t_data *data)
 	t_philo	*tmp;
 
 	tmp = data->philo;
+	if (data->count_thread > data->n_philo)
+		pthread_join(data->thread_supervisor, NULL);
 	while (data->count_thread > 1)
 	{
 		pthread_join(tmp->thread_philo, NULL);
 		data->count_thread--;
 		tmp = tmp->next;
 	}
-	if (data->count_thread == 1)
-		pthread_join(data->thread_supervisor, NULL);
 	destroy_mutex(data);
 }
 
