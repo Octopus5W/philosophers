@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:54 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/02/19 14:48:32 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/07 18:03:02 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,35 @@ int	is_digit(char *str)
 			return (0);
 		i++;
 	}
+	if (i > 3)
+		return (0);
 	return (1);
+}
+
+int	ft_atoi(const char *s)
+{
+	int	nb;
+	int	sign;
+
+	sign = 1;
+	nb = 0;
+	while (*s && ((*s >= 9 && *s <= 13) || *s == 32))
+	{
+		s++;
+	}
+	if (*s == '-')
+	{
+		sign = -1;
+		s++;
+	}
+	else if (*s == '+')
+		s++;
+	while (*s >= '0' && *s <= '9')
+	{
+		nb = nb * 10 + *s - 48;
+		s++;
+	}
+	return (nb * sign);
 }
 
 void	check_settings(t_data *data, int ac, char **av)
@@ -39,10 +67,10 @@ void	check_settings(t_data *data, int ac, char **av)
 		write(2, "Error: arguments must be positive integers\n", 43);
 		exit(1);
 	}
-	data->n_philo = atoi(av[1]);
-	data->t_die = atoi(av[2]);
-	data->t_eat = atoi(av[3]);
-	data->t_sleep = atoi(av[4]);
+	data->n_philo = ft_atoi(av[1]);
+	data->t_die = ft_atoi(av[2]);
+	data->t_eat = ft_atoi(av[3]);
+	data->t_sleep = ft_atoi(av[4]);
 	if (ac == 6)
 		data->n_eat = atoi(av[5]);
 	else
