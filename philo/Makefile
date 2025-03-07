@@ -6,13 +6,13 @@
 #    By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/11 16:20:50 by hdelbecq          #+#    #+#              #
-#    Updated: 2025/03/07 17:07:32 by hdelbecq         ###   ########.fr        #
+#    Updated: 2025/03/07 17:32:08 by hdelbecq         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
-CC = clang
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
 SRC =	src/actions.c src/clean.c src/main.c src/parsing.c src/set_program.c src/utils.c
 OBJ = $(SRC:.c=.o)
 
