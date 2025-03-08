@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:54 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/07 18:03:02 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:01:58 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,14 @@ void	check_settings(t_data *data, int ac, char **av)
 	data->t_die = ft_atoi(av[2]);
 	data->t_eat = ft_atoi(av[3]);
 	data->t_sleep = ft_atoi(av[4]);
+	if (data->n_philo < 1 || data->t_die < 60 || data->t_eat < 60
+		|| data->t_sleep < 60)
+	{
+		write(2, "Error: philo must be between 0 and 201, time over 60\n", 53);
+		exit(1);
+	}
 	if (ac == 6)
-		data->n_eat = atoi(av[5]);
+		data->n_eat = ft_atoi(av[5]);
 	else
 		data->n_eat = -1;
 }

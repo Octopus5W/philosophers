@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 19:27:20 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/07 17:29:13 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:50:43 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	my_sleep(long t_reference, long msec)
 
 	t_end = t_reference + msec;
 	while (get_ms() < t_end)
-		usleep(300);
+		usleep(50);
 }
 
 void	print_message(char *str, t_philo *philo)
