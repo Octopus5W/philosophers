@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/06 20:01:30 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/10 14:43:29 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	set_mutex(t_data *data)
 		if (pthread_mutex_init(&tmp->mutex_fork, NULL))
 			return (write(2, "Error: mutex\n", 13), 1);
 		data->count_mutex++;
+		tmp->t_die = 0;
 		tmp = tmp->next;
 	}
 	if (pthread_mutex_init(&data->mutex_print, NULL))
@@ -66,12 +67,11 @@ int	set_mutex(t_data *data)
 
 int	set_thread(t_data *data)
 {
-	data->t_reference = get_ms();
-	if (set_thread_philo(data))
-		return (write(2, "Error: pthread_create\n", 22), 1);
 	if (pthread_create(&data->thread_supervisor, NULL, &superpower, data))
 		return (write(2, "Error: pthread_create\n", 22), 1);
 	data->count_thread++;
+	if (data->n_philo > 0 && set_thread_philo(data))
+		return (write(2, "Error: pthread_create\n", 22), 1);
 	return (0);
 }
 
@@ -79,14 +79,7 @@ int	set_thread_philo(t_data *data)
 {
 	t_philo	*tmp;
 
-	if (data->n_philo == 1)
-	{
-		tmp = data->philo;
-		if (pthread_create(&tmp->thread_philo, NULL, &routine_one_philo, tmp))
-			return (write(2, "Error: pthread_create\n", 22), 1);
-		data->count_thread++;
-	}
-	else
+	if (data->n_philo > 1)
 	{
 		tmp = NULL;
 		while (tmp != data->philo)
@@ -94,10 +87,17 @@ int	set_thread_philo(t_data *data)
 			if (tmp == NULL)
 				tmp = data->philo;
 			if (pthread_create(&tmp->thread_philo, NULL, &routine, tmp))
-				return (write(2, "Error: pthread_create\n", 22), 1);
+				return (1);
 			data->count_thread++;
 			tmp = tmp->next;
 		}
+	}
+	else if (data->n_philo == 1)
+	{
+		if (pthread_create(&data->philo->thread_philo, NULL, &routine_one_philo,
+				data->philo))
+			return (1);
+		data->count_thread++;
 	}
 	return (0);
 }

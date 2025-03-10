@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 18:20:31 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/06 20:05:33 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/10 14:42:08 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,17 @@ void	destroy_thread(t_data *data)
 {
 	t_philo	*tmp;
 
-	tmp = data->philo;
-	if (data->count_thread > data->n_philo)
-		pthread_join(data->thread_supervisor, NULL);
-	while (data->count_thread > 1)
+	if (data->count_thread > 0)
 	{
-		pthread_join(tmp->thread_philo, NULL);
+		if (pthread_join(data->thread_supervisor, NULL))
+			write(2, "Error: pthread_join\n", 20);
+		data->count_thread--;
+	}
+	tmp = data->philo;
+	while (data->count_thread > 0)
+	{
+		if (pthread_join(tmp->thread_philo, NULL))
+			write(2, "Error: pthread_join\n", 20);
 		data->count_thread--;
 		tmp = tmp->next;
 	}

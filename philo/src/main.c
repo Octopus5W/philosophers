@@ -6,33 +6,48 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/07 16:12:24 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/10 14:48:59 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
+void	start(t_data *data, t_philo *philo)
+{
+	pthread_mutex_lock(&data->mutex_dead);
+	while (!philo->data->t_reference)
+	{
+		pthread_mutex_unlock(&data->mutex_dead);
+		usleep(10);
+		pthread_mutex_lock(&data->mutex_dead);
+	}
+	philo->t_die = philo->data->t_reference + philo->data->t_die;
+	pthread_mutex_unlock(&data->mutex_dead);
+	if (philo->id % 2 == 0)
+		my_sleep(data->t_reference, 30);
+}
+
 void	*superpower(void *arg)
 {
 	t_data	*data;
 	t_philo	*tmp;
-	long	time;
 
 	data = (t_data *)arg;
+	pthread_mutex_lock(&data->mutex_dead);
+	data->t_reference = get_ms();
+	pthread_mutex_unlock(&data->mutex_dead);
 	tmp = data->philo;
-	usleep(10000);
 	while (1)
 	{
 		pthread_mutex_lock(&data->mutex_dead);
-		time = get_ms();
-		if ((tmp->t_die && time >= tmp->t_die) || data->is_dead)
+		if ((tmp->t_die && get_ms() >= tmp->t_die) || data->is_dead)
 		{
 			print_die("die", tmp);
 			pthread_mutex_unlock(&data->mutex_dead);
 			break ;
 		}
 		pthread_mutex_unlock(&data->mutex_dead);
-		usleep(300);
+		usleep(50);
 		tmp = tmp->next;
 	}
 	return (NULL);
@@ -43,17 +58,15 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	pthread_mutex_lock(&philo->data->mutex_dead);
-	philo->t_die = philo->data->t_reference + philo->data->t_die;
-	pthread_mutex_unlock(&philo->data->mutex_dead);
+	start(philo->data, philo);
 	while (1)
 	{
-		if (is_dead(philo->data))
-			break ;
 		take_fork(philo);
 		philo_eat(philo->data, philo);
 		philo_sleep(philo->data, philo);
 		philo_think(philo);
+		if (is_dead(philo->data))
+			break ;
 	}
 	return (NULL);
 }
@@ -79,6 +92,7 @@ int	main(int ac, char *av[])
 
 	data.is_dead = 0;
 	data.has_eat = 0;
+	data.t_reference = 0;
 	data.count_mutex = 0;
 	data.count_thread = 0;
 	check_settings(&data, ac, av);
