@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/11 15:41:31 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:55:44 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ int	main(int ac, char *av[])
 	data.count_mutex = 0;
 	data.count_thread = 0;
 	check_settings(&data, ac, av);
+	if (data.n_eat == 0)
+		exit(1);
 	if (set_philo(&data))
 		destroy_philo(&data);
 	if (set_mutex(&data))
