@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:54 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/10 15:37:57 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:47:58 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	check_settings(t_data *data, int ac, char **av)
 	if (data->n_philo < 1 || data->n_philo > 200 || data->t_die < 60
 		|| data->t_eat < 60 || data->t_sleep < 60)
 	{
-		write(2, "Error: arg must be between 0 and 201, time over 60\n", 52);
+		write(2, "Error: philo must be between 0 and 201, time over 60\n", 53);
 		exit(1);
 	}
 	if (ac == 6)

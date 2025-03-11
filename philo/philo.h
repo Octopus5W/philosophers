@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:21:00 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/10 14:42:00 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:24:09 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void				*routine_one_philo(void *arg);
 long				get_ms(void);
 void				my_sleep(long t_reference, long msec);
 void				print_message(char *str, t_philo *philo);
-void				print_die(char *str, t_philo *philo);
 void				check_eat(t_philo *philo);
 
 #endif

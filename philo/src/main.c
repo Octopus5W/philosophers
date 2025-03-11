@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/10 14:48:59 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:41:31 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	start(t_data *data, t_philo *philo)
 	while (!philo->data->t_reference)
 	{
 		pthread_mutex_unlock(&data->mutex_dead);
-		usleep(10);
+		usleep(50);
 		pthread_mutex_lock(&data->mutex_dead);
 	}
 	philo->t_die = philo->data->t_reference + philo->data->t_die;
@@ -40,16 +40,19 @@ void	*superpower(void *arg)
 	while (1)
 	{
 		pthread_mutex_lock(&data->mutex_dead);
-		if ((tmp->t_die && get_ms() >= tmp->t_die) || data->is_dead)
+		if ((tmp->t_die && get_ms() >= tmp->t_die) && !data->is_dead)
 		{
-			print_die("die", tmp);
-			pthread_mutex_unlock(&data->mutex_dead);
-			break ;
+			data->is_dead = 1;
+			printf("%ld %i die\n", get_ms() - data->t_reference,
+				data->philo->id);
 		}
+		if (data->is_dead)
+			break ;
 		pthread_mutex_unlock(&data->mutex_dead);
 		usleep(50);
 		tmp = tmp->next;
 	}
+	pthread_mutex_unlock(&data->mutex_dead);
 	return (NULL);
 }
 
