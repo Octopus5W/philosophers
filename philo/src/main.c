@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/11 15:55:44 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:59:31 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,12 @@ void	*routine_one_philo(void *arg)
 
 	philo = (t_philo *)arg;
 	pthread_mutex_lock(&philo->data->mutex_dead);
+	while (!philo->data->t_reference)
+	{
+		pthread_mutex_unlock(&philo->data->mutex_dead);
+		usleep(50);
+		pthread_mutex_lock(&philo->data->mutex_dead);
+	}
 	philo->t_die = philo->data->t_reference + philo->data->t_die;
 	pthread_mutex_unlock(&philo->data->mutex_dead);
 	pthread_mutex_lock(&philo->mutex_fork);
