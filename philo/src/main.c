@@ -6,7 +6,7 @@
 /*   By: hdelbecq <hdelbecq@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:20:39 by hdelbecq          #+#    #+#             */
-/*   Updated: 2025/03/11 16:05:19 by hdelbecq         ###   ########.fr       */
+/*   Updated: 2025/03/14 20:06:54 by hdelbecq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	*superpower(void *arg)
 		if ((tmp->t_die && get_ms() >= tmp->t_die) && !data->is_dead)
 		{
 			data->is_dead = 1;
-			printf("%ld %i die\n", get_ms() - data->t_reference, tmp->id);
+			printf("%ld %i died\n", get_ms() - data->t_reference, tmp->id);
 		}
 		if (data->is_dead)
 			break ;
